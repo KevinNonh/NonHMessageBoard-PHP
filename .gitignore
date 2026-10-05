@@ -1,0 +1,28 @@
+# 本地配置文件
+/config.php
+
+# 数据库和 WAL
+/storage/*.sqlite
+/storage/*.sqlite-wal
+/storage/*.sqlite-shm
+/storage/*.backup-*
+
+# 上传的临时目录
+/storage/upload/
+/storage/tmp/
+
+# 日志
+*.log
+
+# 备份文件
+*.bak
+*.old
+*.zip
+
+# 编辑器
+.vscode/
+.idea/
+.DS_Store
+
+# 按需使用脚本（含危险工具）
+/按需使用/
