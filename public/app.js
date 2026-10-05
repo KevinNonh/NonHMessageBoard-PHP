@@ -268,11 +268,20 @@
         return card;
     }
 
-    var savedView = 'bubbles';
+    var urlView = '';
     try {
-        var v = localStorage.getItem(VIEW_KEY);
-        if (v === 'list' || v === 'bubbles') savedView = v;
+        urlView = new URLSearchParams(location.search).get('view') || '';
     } catch (e) {}
+
+    var savedView = 'bubbles';
+    if (urlView === 'list' || urlView === 'bubbles') {
+        savedView = urlView;
+    } else {
+        try {
+            var v = localStorage.getItem(VIEW_KEY);
+            if (v === 'list' || v === 'bubbles') savedView = v;
+        } catch (e) {}
+    }
     applyView(savedView);
 
     btn.addEventListener('click', function () {
@@ -1294,6 +1303,37 @@ function initBgCanvas() {
     requestAnimationFrame(loop);
 }
 
+// ===== 站点图标实时预览 =====
+function initIconPreview() {
+    var input = document.getElementById('site-icon-input');
+    var preview = document.getElementById('icon-preview');
+    if (!input || !preview) return;
+
+    function render(v) {
+        v = (v || '').trim();
+        if (v === '') {
+            preview.innerHTML = '<span class="icon-preview-empty">未设置</span>';
+            return;
+        }
+        if (/^https?:\/\//i.test(v)) {
+            var img = document.createElement('img');
+            img.alt = '图标预览';
+            img.onerror = function () {
+                preview.innerHTML = '<span class="icon-preview-empty">图片加载失败</span>';
+            };
+            img.src = v;
+            preview.innerHTML = '';
+            preview.appendChild(img);
+        } else {
+            preview.textContent = v;
+        }
+    }
+
+    input.addEventListener('input', function () {
+        render(input.value);
+    });
+}
+
     document.addEventListener('DOMContentLoaded', function () {
         initTheme();
         initModal();
@@ -1304,5 +1344,6 @@ function initBgCanvas() {
 		initEditToggle();
 		initStylePicker();
 		initBgCanvas();
+		initIconPreview();
     });
 })();

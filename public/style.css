@@ -1606,3 +1606,16 @@ body.view-list .load-more-wrap {
     z-index: 1;
     background: transparent;
 }
+
+/* ===== 站点图标预览 ===== */
+.icon-preview img {
+    max-height: 32px;
+    max-width: 200px;
+    vertical-align: middle;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+.icon-preview-empty {
+    color: var(--text-muted);
+    font-size: 12px;
+}

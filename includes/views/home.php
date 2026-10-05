@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<?php
+$forceTheme = (string)($_GET['theme'] ?? '');
+$forceStyle = (string)($_GET['style'] ?? '');
+?>
 <html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -11,14 +15,22 @@
 <script>
 (function () {
     try {
+        <?php if (in_array($forceTheme, ['light', 'dark'], true)): ?>
+        document.documentElement.dataset.theme = <?= json_encode($forceTheme) ?>;
+        <?php else: ?>
         var t = localStorage.getItem('mb_theme');
         if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+        <?php endif; ?>
 
+        <?php if ($forceStyle !== ''): ?>
+        document.documentElement.dataset.style = <?= json_encode($forceStyle) ?>;
+        <?php else: ?>
         var s = localStorage.getItem('mb_style');
-        var allowed = ['cute', 'tech', 'green', 'star', 'snow', 'cyber', 'aurora', 'y2k'];
+        var allowed = ['cute','tech','green','star','snow','cyber','aurora','y2k'];
         if (s && allowed.indexOf(s) !== -1) {
             document.documentElement.dataset.style = s;
         }
+        <?php endif; ?>
     } catch (e) {}
 })();
 </script>

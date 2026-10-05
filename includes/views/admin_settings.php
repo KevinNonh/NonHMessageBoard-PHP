@@ -29,6 +29,8 @@ if (!empty($settingOld)) {
     }
 }
 $favicon = site_favicon_url();
+$iconVal = (string)$current['site_icon'];
+$iconIsUrl = $iconVal !== '' && preg_match('~^https?://~i', $iconVal);
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="light">
@@ -88,12 +90,21 @@ $favicon = site_favicon_url();
             </label>
             <label>
                 <span>站点图标（Emoji 或图片 URL）</span>
-                <input type="text" name="site_icon" maxlength="200"
-                       placeholder="例如：💬 或 https://example.com/icon.png"
-                       value="<?= e($current['site_icon']) ?>">
+                <input type="text" name="site_icon" id="site-icon-input" maxlength="200"
+                   placeholder="例如：💬 或 https://example.com/icon.png"
+                   value="<?= e($current['site_icon']) ?>">
             </label>
             <div class="settings-hint">
-                当前预览：<span class="icon-preview"><?= e($current['site_icon']) ?></span>
+                当前预览：
+                <span class="icon-preview" id="icon-preview">
+                    <?php if ($iconIsUrl): ?>
+                        <img src="<?= e($iconVal) ?>" alt="图标预览">
+                    <?php elseif ($iconVal !== ''): ?>
+                        <?= e($iconVal) ?>
+                    <?php else: ?>
+                        <span class="icon-preview-empty">未设置</span>
+                    <?php endif; ?>
+                </span>
             </div>
             <label>
                 <span>时区</span>
