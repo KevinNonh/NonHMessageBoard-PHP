@@ -34,11 +34,17 @@ if ($action === 'login') {
             $passOk = $dbHash !== '' && password_verify($p, $dbHash);
 
             if ($userOk && $passOk) {
-                session_regenerate_id(true);
-                $_SESSION['admin'] = true;
-                unset($_SESSION['login_attempts']);
-                redirect('admin.php');
+            session_regenerate_id(true);
+            $_SESSION['admin'] = true;
+            unset($_SESSION['login_attempts']);
+        
+            $back = (string)($_SESSION['admin_redirect'] ?? '');
+            unset($_SESSION['admin_redirect']);
+            if ($back !== '' && preg_match('~^/[^\s]*$~', $back)) {
+                redirect($back);
             }
+            redirect('admin.php');
+        }
 
             $loginError = '用户名或密码错误';
         }

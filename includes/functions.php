@@ -36,8 +36,12 @@ function is_admin(): bool
 function require_admin(): void
 {
     if (!is_admin()) {
-        header('Location: admin.php?action=login');
-        exit;
+        $uri = (string)($_SERVER['REQUEST_URI'] ?? '');
+        // 只允许相对路径，防止开放重定向
+        if ($uri !== '' && preg_match('~^/[^\s]*$~', $uri) && strpos($uri, '/admin.php') === false) {
+            $_SESSION['admin_redirect'] = $uri;
+        }
+        redirect('admin.php?action=login');
     }
 }
 

@@ -37,6 +37,21 @@ SQL);
 $pdo->exec('CREATE INDEX IF NOT EXISTS idx_messages_created ON messages (created_at DESC)');
 
 $pdo->exec(<<<SQL
+CREATE TABLE IF NOT EXISTS ocs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    birth_month INTEGER NOT NULL,
+    birth_day INTEGER NOT NULL,
+    birth_year INTEGER,
+    color TEXT NOT NULL DEFAULT '#ff7aab',
+    avatar_url TEXT,
+    wiki_url TEXT,
+    created_at TEXT NOT NULL
+)
+SQL);
+$pdo->exec('CREATE INDEX IF NOT EXISTS idx_ocs_birth ON ocs (birth_month, birth_day)');
+
+$pdo->exec(<<<SQL
 CREATE TABLE IF NOT EXISTS settings (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL DEFAULT ''
